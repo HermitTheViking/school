@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-tabs',
@@ -6,7 +8,19 @@ import { Component } from '@angular/core';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
+  errorMessage = '';
 
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) { }
+
+  doLogout(): void {
+    this.authService.doLogout()
+      .then(
+        () => this.router.navigate(['/auth/login']),
+        err => this.errorMessage = err
+      );
+  }
 
 }
