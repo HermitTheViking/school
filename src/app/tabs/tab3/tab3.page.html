@@ -13,4 +13,9 @@
     </ion-toolbar>
   </ion-header>
 
+  <div class="toolbar">
+    <button class="button" [disabled]="!geolocation" (click)="locate()">My position</button>
+  </div>
+
+  <div id="map" class="ml-40 w-5/6 h-5/6"></div>
 </ion-content>

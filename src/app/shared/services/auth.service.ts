@@ -1,12 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { AngularFireAuth } from '@angular/fire/auth';
-
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
-import firebase from 'firebase';
 
 import { TokenStorageService } from './token-storage.service';
 
@@ -30,7 +26,7 @@ export class AuthService {
                     this.tokenStorage.saveToken(token.token);
                 });
                 this.tokenStorage.saveUser(login);
-                this.router.navigate(['']);
+                this.router.navigate(['/tabs']);
                 return true;
             },
                 err => {
@@ -40,38 +36,26 @@ export class AuthService {
             );
     }
 
-    doGetNewToken(): void {
-        const user = firebase.auth().currentUser;
-        if (user !== null) {
-            user.getIdToken(true)
-                .then(
-                    (idToken) => {
-                        this.tokenStorage.saveToken(idToken);
-                    }
-                )
-                .catch(
-                    (error) => {
-                        console.log(error);
-                    }
-                );
-        }
+    doNewToken(): void {
+        this.afAuth.idToken.subscribe(
+            (idToken) => {
+                this.tokenStorage.saveToken(idToken);
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 
     doRegister(value: { email: string; password: string; }): Promise<any> {
         return this.afAuth.createUserWithEmailAndPassword(value.email, value.password).then(res => {
             console.log(res);
-            this.doSendVerificationMail(res);
+            res.user.sendEmailVerification();
             return 'Your account has been created';
         }, err => {
             console.log('err ' + err);
             return err.message;
         });
-    }
-
-    doSendVerificationMail(currentUser: firebase.auth.UserCredential): void {
-        if (currentUser !== null && currentUser.user !== null) {
-            currentUser.user.sendEmailVerification();
-        }
     }
 
     doLogout(): Promise<any> {
@@ -89,7 +73,7 @@ export class AuthService {
     isLoggedIn(): void {
         this.afAuth.onAuthStateChanged(userInfo => {
             if (userInfo) {
-                this.router.navigate(['/tabs/tab1']);
+                this.router.navigate(['/tabs']);
                 this.splashScreen.hide();
             }
             else {

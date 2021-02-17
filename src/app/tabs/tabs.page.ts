@@ -22,5 +22,4 @@ export class TabsPage {
         err => this.errorMessage = err
       );
   }
-
 }
