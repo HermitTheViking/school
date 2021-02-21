@@ -1,0 +1,12 @@
+<div class="bg-grey-lighter w-32 lg:w-96 shadow-md">
+  <div class="flex h-60">
+    <app-color-palette [hue]="hue" (color)="color = $event"></app-color-palette>
+    <app-color-slider (color)="hue = $event" style="margin-left:16px"></app-color-slider>
+  </div>
+  <div
+    class="appearance-none rounded-none relative block w-full px-3 py-2 text-white border rounded-b-md ring-indigo-500 border-indigo-500 sm:text-sm mt-4 flex">
+    <span class="leading-loose flex-1 font-sans">{{color}}</span>
+    <div class="w-8 h-8 border rounded-md ring-indigo-500 border-indigo-500"
+      [ngStyle]="{'background-color': color || 'white'}"></div>
+  </div>
+</div>

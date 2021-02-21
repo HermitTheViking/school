@@ -10,7 +10,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,11 +17,14 @@ import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 
 import { AuthPageModule } from './auths/auth.module';
+import { TabsPageModule } from './tabs/tabs.module';
+import { ColorPickerModule } from './components/color-picker/color-picker.module';
 
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { TokenStorageService } from 'src/app/shared/services/token-storage.service';
-import { authInterceptorProviders } from 'src/app/shared/interceptors/auth';
+import { AuthService } from './shared/services/auth.service';
+import { TokenStorageService } from './shared/services/token-storage.service';
+import { authInterceptorProviders } from './shared/interceptors/auth';
 import { GeoService } from './shared/services/geo.service';
+import { DatabaseService } from './shared/services/database.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,14 +39,16 @@ import { GeoService } from './shared/services/geo.service';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFireStorageModule,
 
     AuthPageModule,
+    TabsPageModule,
+    ColorPickerModule
   ],
   providers: [
     AuthService,
     TokenStorageService,
     GeoService,
+    DatabaseService,
     authInterceptorProviders,
     StatusBar,
     SplashScreen,
